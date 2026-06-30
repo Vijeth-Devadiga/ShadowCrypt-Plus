@@ -13,6 +13,9 @@ shadowcrypt/
 ├── README.md
 ├── frontend/
 │   └── index.html              Single-file SPA — open in any browser
+│   └── assets/
+│     └── css/ 
+│     └── js/       
 └── backend/
     ├── start.sh                One-command startup
     ├── requirements.txt
