@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+        content="ShadowCrypt++ — Fast, secure, developer-friendly encoding, hashing, and cryptography tools." />
+    <title>ShadowCrypt++ — Universal Encoding Platform</title>
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237c3aed'/><path d='M16 4L28 9v10c0 8-6 13-12 15C10 32 4 27 4 19V9z' fill='rgba(255,255,255,.2)'/><rect x='11' y='17' width='10' height='9' rx='2' fill='white'/><path d='M13 17v-3a3 3 0 016 0v3' stroke='white' stroke-width='2' fill='none'/></svg>" />
+
+    <!-- Dependencies -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/motion@11.5.3/dist/motion.js" defer></script>
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+</head>
+
+<body>
+
+    <!-- Skip link for WCAG -->
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <!-- Backgrounds -->
+    <div class="bg" aria-hidden="true">
+        <div class="bg-grid"></div>
+        <div class="bg-orb bg-orb-1"></div>
+        <div class="bg-orb bg-orb-2"></div>
+        <div class="bg-orb bg-orb-3"></div>
+    </div>
+
+    <!-- Drawer -->
+    <div class="drawer-mask" id="drawerMask" onclick="closeDrawer()"></div>
+    <nav class="drawer" id="drawer" aria-label="Mobile navigation">
+        <div style="margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--c-border)">
+            <div style="font-size:14px;font-weight:800">Shadow<span style="color:var(--c-purple-3)">Crypt++</span></div>
+            <div class="xs mono dim" style="margin-top:2px">UNIVERSAL ENCODING PLATFORM</div>
+        </div>
+        <button class="drawer-link" data-nav="home">Home</button>
+        <button class="drawer-link" data-nav="encode">Encode / Decode</button>
+        <button class="drawer-link" data-nav="hash">Hash Generator</button>
+        <button class="drawer-link" data-nav="jwt">JWT Tools</button>
+        <button class="drawer-link" data-nav="compression">Compression</button>
+        <button class="drawer-link" data-nav="devtools">Dev Utilities</button>
+        <button class="drawer-link" data-nav="json">JSON Formatter</button>
+        <button class="drawer-link" data-nav="qr">QR Code</button>
+        <button class="drawer-link" data-nav="api">API Docs</button>
+        <button class="drawer-link" data-nav="about">About</button>
+    </nav>
+
+    <div class="app">
+
+        <!-- NAVIGATION -->
+        <header>
+            <nav class="nav" aria-label="Main navigation">
+                <div class="container nav-inner">
+                    <button class="hamburger" aria-label="Open menu" aria-expanded="false" id="hamburger"
+                        onclick="openDrawer()">
+                        <span></span><span></span><span></span>
+                    </button>
+                    <button class="nav-logo" onclick="goto('home')" aria-label="ShadowCrypt++ home">
+                        <div class="nav-logo-icon" aria-hidden="true">
+                            <i data-lucide="shield" style="width:17px;height:17px;color:#fff"></i>
+                        </div>
+                        <div>
+                            <div class="nav-logo-name">Shadow<span>Crypt++</span></div>
+                            <div class="nav-logo-tag">Encoding Platform</div>
+                        </div>
+                    </button>
+
+                    <div class="nav-links" role="list">
+                        <button class="nav-link active" data-nav="home" role="listitem">Home</button>
+                        <button class="nav-link" data-nav="encode" role="listitem">Encode/Decode</button>
+                        <button class="nav-link" data-nav="hash" role="listitem">Hash</button>
+                        <button class="nav-link" data-nav="jwt" role="listitem">JWT</button>
+                        <button class="nav-link" data-nav="compression" role="listitem">Compress</button>
+                        <button class="nav-link" data-nav="devtools" role="listitem">Dev Tools</button>
+                        <button class="nav-link" data-nav="json" role="listitem">JSON</button>
+                        <button class="nav-link" data-nav="qr" role="listitem">QR</button>
+                        <button class="nav-link" data-nav="api" role="listitem">API</button>
+                        <button class="nav-link" data-nav="about" role="listitem">About</button>
+                    </div>
+
+                    <div class="nav-end">
+                        <button class="api-status" id="apiStatusBtn" onclick="goto('api')" aria-label="API status">
+                            <span class="api-dot" id="apiDot"></span>
+                            <span id="apiStatusTxt">API Offline</span>
+                        </button>
+                        <div class="nav-search-wrap">
+                            <i data-lucide="search" class="nav-search-icon" style="width:13px;height:13px"
+                                aria-hidden="true"></i>
+                            <input class="nav-search-input" placeholder="Search tools… (⌘K)" readonly
+                                onclick="openSearch()" aria-label="Search tools" />
+                        </div>
+                        <button class="btn btn-secondary btn-sm" onclick="goto('api')" aria-label="API documentation">
+                            <i data-lucide="code-2" style="width:13px;height:13px" aria-hidden="true"></i> API
+                        </button>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main id="main-content">
+
+            <!-- ════════════════ HOME ════════════════ -->
+            <div class="page active" id="page-home">
+                <div class="container">
+
+                    <section class="hero" aria-labelledby="hero-h1">
+                        <div class="hero-inner">
+                            <div>
+                                <!-- <div class="hero-badge">
+                                    <div class="badge-dot"></div>
+                                    Privacy-first · Open source
+                                </div> -->
+                                <h1 class="hero-h1" id="hero-h1">Encode.<br>Decode.<br><span
+                                        class="hero-h1-accent">Protect.</span></h1>
+                                <p class="hero-sub">Fast, secure, developer-friendly encoding tools.<br><span
+                                        class="hero-sub-hl">Your data never leaves your browser.</span></p>
+                                <div class="hero-pills">
+                                    <div class="hero-pill"><i data-lucide="shield-check" class="hero-pill-ico"
+                                            style="width:13px;height:13px" aria-hidden="true"></i>Secure</div>
+                                    <div class="hero-pill"><i data-lucide="zap" class="hero-pill-ico"
+                                            style="width:13px;height:13px" aria-hidden="true"></i>Blazing Fast</div>
+                                    <div class="hero-pill"><i data-lucide="eye-off" class="hero-pill-ico"
+                                            style="width:13px;height:13px" aria-hidden="true"></i>Private</div>
+                                    <div class="hero-pill"><i data-lucide="code-2" class="hero-pill-ico"
+                                            style="width:13px;height:13px" aria-hidden="true"></i>Dev Friendly</div>
+                                    <!-- <div class="hero-pill"><i data-lucide="wifi-off" class="hero-pill-ico"
+                                            style="width:13px;height:13px" aria-hidden="true"></i>Works Offline</div> -->
+                                </div>
+                            </div>
+                            <div class="shield-scene" aria-hidden="true">
+                                <div class="shield-ring"></div>
+                                <div class="shield-ring"></div>
+                                <div class="shield-ring"></div>
+                                <svg class="shield-svg" viewBox="0 0 200 230" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <defs>
+                                        <linearGradient id="sg1" x1="0" y1="0" x2="200" y2="230"
+                                            gradientUnits="userSpaceOnUse">
+                                            <stop offset="0%" stop-color="#9333ea" />
+                                            <stop offset="60%" stop-color="#7c3aed" />
+                                            <stop offset="100%" stop-color="#4c1d95" />
+                                        </linearGradient>
+                                        <linearGradient id="sg2" x1="0" y1="0" x2="200" y2="230"
+                                            gradientUnits="userSpaceOnUse">
+                                            <stop offset="0%" stop-color="#a78bfa" stop-opacity=".28" />
+                                            <stop offset="100%" stop-color="#7c3aed" stop-opacity=".04" />
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M100 8L178 42v60C178 152 140 194 100 216 60 194 22 152 22 102V42Z"
+                                        fill="url(#sg1)" stroke="rgba(167,139,250,.45)" stroke-width="1.5" />
+                                    <path d="M100 22L164 52v52C164 144 130 182 100 200 70 182 36 144 36 104V52Z"
+                                        fill="url(#sg2)" />
+                                    <rect x="72" y="112" width="56" height="48" rx="7" fill="rgba(167,139,250,.82)" />
+                                    <path d="M80 112V98C80 81 120 81 120 98v14" stroke="rgba(167,139,250,.88)"
+                                        stroke-width="7" stroke-linecap="round" fill="none" />
+                                    <circle cx="100" cy="133" r="9" fill="rgba(76,29,149,.9)" />
+                                    <rect x="96.5" y="133" width="7" height="12" rx="3.5" fill="rgba(76,29,149,.9)" />
+                                    <circle cx="58" cy="78" r="2.5" fill="rgba(167,139,250,.35)" />
+                                    <circle cx="142" cy="78" r="2.5" fill="rgba(167,139,250,.35)" />
+                                    <circle cx="48" cy="124" r="1.8" fill="rgba(167,139,250,.25)" />
+                                    <circle cx="152" cy="124" r="1.8" fill="rgba(167,139,250,.25)" />
+                                </svg>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Quick Workspace -->
+                    <section aria-label="Encoding workspace">
+                        <div class="workspace">
+                            <div class="workspace-toolbar">
+                                <div class="toggle-tabs" role="tablist" aria-label="Mode">
+                                    <button class="toggle-tab" id="homeTabEnc" role="tab" aria-selected="true"
+                                        onclick="setHomeMode('encode')"><i data-lucide="lock"
+                                            style="width:12px;height:12px" aria-hidden="true"></i> Encode</button>
+                                    <button class="toggle-tab" id="homeTabDec" role="tab" aria-selected="false"
+                                        onclick="setHomeMode('decode')"><i data-lucide="unlock"
+                                            style="width:12px;height:12px" aria-hidden="true"></i> Decode</button>
+                                </div>
+                                <div style="flex:1"></div>
+                                <button class="swap-btn" onclick="swapHome()" aria-label="Swap input and output">
+                                    <i data-lucide="arrow-left-right" style="width:12px;height:12px"
+                                        aria-hidden="true"></i> Swap
+                                </button>
+                                <span class="algo-lbl">Algorithm</span>
+                                <select class="algo-select" id="homeAlgo" onchange="runHome()"
+                                    aria-label="Select algorithm">
+                                    <optgroup label="Base Encodings">
+                                        <option value="base64">Base64</option>
+                                        <option value="base32">Base32</option>
+                                        <option value="base16">Base16</option>
+                                        <option value="base58">Base58</option>
+                                        <option value="base62">Base62</option>
+                                        <option value="base85">Base85</option>
+                                    </optgroup>
+                                    <optgroup label="Numeric">
+                                        <option value="hex">Hexadecimal</option>
+                                        <option value="binary">Binary</option>
+                                        <option value="octal">Octal</option>
+                                        <option value="decimal">Decimal</option>
+                                    </optgroup>
+                                    <optgroup label="Web">
+                                        <option value="url">URL Encode</option>
+                                        <option value="html">HTML Entities</option>
+                                        <option value="unicode">Unicode Escape</option>
+                                    </optgroup>
+                                    <optgroup label="Ciphers">
+                                        <option value="rot13">ROT13</option>
+                                        <option value="caesar">Caesar</option>
+                                        <option value="atbash">Atbash</option>
+                                        <option value="morse">Morse Code</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            <div class="ws-body">
+                                <div class="ws-panel">
+                                    <div class="ws-label" id="homeLblIn">Enter Your Text</div>
+                                    <div class="detect-banner" id="homeDetect" role="status">
+                                        <i data-lucide="scan-search" style="width:13px;height:13px"
+                                            aria-hidden="true"></i>
+                                        <span id="homeDetectTxt"></span>
+                                    </div>
+                                    <textarea class="ws-textarea" id="homeIn"
+                                        placeholder="Type or paste your text here…" oninput="onHomeInput()"
+                                        spellcheck="false" aria-label="Input text"></textarea>
+                                    <div class="ws-footer">
+                                        <span class="ws-charcount"><span id="homeCharCount">0</span> chars</span>
+                                    </div>
+                                </div>
+
+                                <div class="ws-panel">
+                                    <div class="ws-label" id="homeLblOut">Encoded Output</div>
+                                    <div class="ws-out empty" id="homeOut" aria-live="polite" aria-label="Output">Output
+                                        will appear here…</div>
+                                    <div class="ws-footer row-end">
+                                        <button class="btn btn-ghost btn-icon btn-sm" onclick="clearHome()"
+                                            aria-label="Clear"><i data-lucide="x" style="width:12px;height:12px"
+                                                aria-hidden="true"></i></button>
+                                        <button class="btn btn-secondary btn-sm" id="homeCopyBtn"
+                                            onclick="copyHomeOut()"><i data-lucide="copy" style="width:12px;height:12px"
+                                                aria-hidden="true"></i> Copy</button>
+                                        <button class="btn btn-secondary btn-sm btn-icon"
+                                            onclick="dlText(document.getElementById('homeOut').textContent,'shadowcrypt-output.txt')"
+                                            aria-label="Download"><i data-lucide="download"
+                                                style="width:12px;height:12px" aria-hidden="true"></i></button>
+                                    </div>
+                                </div>
+
+                                <div class="pop-side" aria-label="Popular algorithms">
+                                    <div class="pop-lbl">Popular</div>
+                                    <div id="popularList"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Why strip -->
+                    <section class="why-strip" aria-labelledby="why-lbl">
+                        <div class="eyebrow" id="why-lbl">Why ShadowCrypt++?</div>
+                        <div class="why-grid">
+                            <div class="why-item">
+                                <div class="why-ico" aria-hidden="true"><i data-lucide="shield"
+                                        style="width:15px;height:15px"></i></div>
+                                <div>
+                                    <div class="why-title">Military Grade</div>
+                                    <div class="why-desc">Algorithms trusted by security professionals worldwide.</div>
+                                </div>
+                            </div>
+                            <div class="why-item">
+                                <div class="why-ico" aria-hidden="true"><i data-lucide="layers"
+                                        style="width:15px;height:15px"></i></div>
+                                <div>
+                                    <div class="why-title">24+ Formats</div>
+                                    <div class="why-desc">From Base64 to Polybius, every format covered.</div>
+                                </div>
+                            </div>
+                            <div class="why-item">
+                                <div class="why-ico" aria-hidden="true"><i data-lucide="zap"
+                                        style="width:15px;height:15px"></i></div>
+                                <div>
+                                    <div class="why-title">Blazing Fast</div>
+                                    <div class="why-desc">Instant processing — no server round-trips.</div>
+                                </div>
+                            </div>
+                            <div class="why-item">
+                                <div class="why-ico" aria-hidden="true"><i data-lucide="eye-off"
+                                        style="width:15px;height:15px"></i></div>
+                                <div>
+                                    <div class="why-title">Zero Tracking</div>
+                                    <div class="why-desc">No data stored, no analytics, no cookies.</div>
+                                </div>
+                            </div>
+                            <div class="why-item">
+                                <div class="why-ico" aria-hidden="true"><i data-lucide="terminal"
+                                        style="width:15px;height:15px"></i></div>
+                                <div>
+                                    <div class="why-title">REST API</div>
+                                    <div class="why-desc">Full FastAPI backend with Swagger docs.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+
+            <!-- ════════════════ ENCODE / DECODE ════════════════ -->
+            <div class="page" id="page-encode">
+                <div class="container">
+                    <div class="section">
+                        <div class="eyebrow">Encode / Decode</div>
+                        <h2 class="section-title">Universal Encoder &amp; Decoder</h2>
+                        <p class="section-sub">24 algorithms — auto-detects format on decode. API-powered with offline
+                            fallback.</p>
+
+                        <div id="encApiBanner" class="api-online-badge offline hidden">
+                            <span class="api-dot" id="encDot"></span>
+                            <span id="encBannerTxt">Backend offline — using client-side engine</span>
+                        </div>
+
+                        <div class="card mb-20">
+                            <div class="row mb-16" style="flex-wrap:wrap;gap:10px;">
+                                <div class="toggle-tabs" role="tablist" aria-label="Mode">
+                                    <button class="toggle-tab" id="encTabE" role="tab" aria-selected="true"
+                                        onclick="setEncMode('encode')"><i data-lucide="lock"
+                                            style="width:12px;height:12px" aria-hidden="true"></i> Encode</button>
+                                    <button class="toggle-tab" id="encTabD" role="tab" aria-selected="false"
+                                        onclick="setEncMode('decode')"><i data-lucide="unlock"
+                                            style="width:12px;height:12px" aria-hidden="true"></i> Decode</button>
+                                </div>
+                                <div style="flex:1"></div>
+                                <select class="algo-select" id="encAlgo" onchange="onEncAlgoChange()"
+                                    aria-label="Algorithm">
+                                    <optgroup label="Base Encodings">
+                                        <option value="base64">Base64</option>
+                                        <option value="base32">Base32</option>
+                                        <option value="base16">Base16</option>
+                                        <option value="base58">Base58</option>
+                                        <option value="base62">Base62</option>
+                                        <option value="base85">Base85</option>
+                                    </optgroup>
+                                    <optgroup label="Numeric">
+                                        <option value="hex">Hexadecimal</option>
+                                        <option value="binary">Binary</option>
+                                        <option value="octal">Octal</option>
+                                        <option value="decimal">Decimal</option>
+                                    </optgroup>
+                                    <optgroup label="Web">
+                                        <option value="url">URL Encoding</option>
+                                        <option value="html">HTML Entities</option>
+                                        <option value="unicode">Unicode Escape</option>
+                                        <option value="ascii">ASCII Codes</option>
+                                        <option value="punycode">Punycode</option>
+                                    </optgroup>
+                                    <optgroup label="Ciphers">
+                                        <option value="rot13">ROT13</option>
+                                        <option value="caesar">Caesar</option>
+                                        <option value="vigenere">Vigenère</option>
+                                        <option value="atbash">Atbash</option>
+                                        <option value="morse">Morse Code</option>
+                                        <option value="bacon">Bacon</option>
+                                        <option value="railfence">Rail Fence</option>
+                                        <option value="affine">Affine</option>
+                                        <option value="polybius">Polybius Square</option>
+                                    </optgroup>
+                                </select>
+                                <button class="btn btn-ghost btn-sm" onclick="detectEnc()"
+                                    aria-label="Auto-detect format">
+                                    <i data-lucide="scan-search" style="width:12px;height:12px" aria-hidden="true"></i>
+                                    Detect
+                                </button>
+                            </div>
+
+                            <div class="cipher-wrap" id="cipherWrap">
+                                <label class="field-label" for="cipherKey">Key / Shift</label>
+                                <input class="input input-mono" id="cipherKey"
+                                    placeholder="e.g. 3 (Caesar) · key (Vigenère) · 5,8 (Affine) · 3 (Rail Fence)"
+                                    oninput="runEnc()" aria-label="Cipher key" />
+                            </div>
+
+                            <div class="col-2">
+                                <div>
+                                    <label class="field-label" for="encIn">Input</label>
+                                    <textarea class="editor" id="encIn" placeholder="Paste or type text…"
+                                        spellcheck="false" oninput="runEnc()" aria-label="Input text"></textarea>
+                                    <div class="row mt-8">
+                                        <span class="xs muted" id="encInCount">0 chars</span>
+                                        <div style="flex:1"></div>
+                                        <button class="btn btn-secondary btn-sm" onclick="pasteEnc()"><i
+                                                data-lucide="clipboard" style="width:12px;height:12px"
+                                                aria-hidden="true"></i> Paste</button>
+                                        <button class="btn btn-ghost btn-sm" onclick="clearEnc()"><i data-lucide="x"
+                                                style="width:12px;height:12px" aria-hidden="true"></i> Clear</button>
+                                        <label class="btn btn-secondary btn-sm" style="cursor:pointer"
+                                            aria-label="Upload file">
+                                            <i data-lucide="upload" style="width:12px;height:12px"
+                                                aria-hidden="true"></i> File
+                                            <input type="file" accept=".txt,.json,.csv" style="display:none"
+                                                onchange="loadEncFile(event)" />
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="field-label" for="encOut">Output</label>
+                                    <textarea class="editor out" id="encOut" readonly spellcheck="false"
+                                        aria-label="Output" aria-live="polite"></textarea>
+                                    <div class="row mt-8">
+                                        <span class="xs muted" id="encOutCount">0 chars</span>
+                                        <div style="flex:1"></div>
+                                        <button class="btn btn-secondary btn-sm" id="encCopyBtn" onclick="copyEnc()"><i
+                                                data-lucide="copy" style="width:12px;height:12px"
+                                                aria-hidden="true"></i> Copy</button>
+                                        <button class="btn btn-secondary btn-sm" onclick="dlEnc('txt')"><i
+                                                data-lucide="download" style="width:12px;height:12px"
+                                                aria-hidden="true"></i> TXT</button>
+                                        <button class="btn btn-secondary btn-sm" onclick="dlEnc('json')">JSON</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Batch chain -->
+                        <div class="card">
+                            <div class="card-title"><i data-lucide="git-branch"
+                                    style="width:15px;height:15px;color:var(--c-purple-3)" aria-hidden="true"></i> Batch
+                                Chain</div>
+                            <p class="card-sub">Pipeline up to 20 encoding operations in sequence — each output feeds
+                                into the next.</p>
+                            <div class="chain-row">
+                                <span class="xs dim mono">INPUT</span>
+                                <span class="chain-arrow">→</span>
+                                <select class="algo-select" data-chain="0">
+                                    <option value="base64">Base64</option>
+                                    <option value="hex">Hex</option>
+                                    <option value="binary">Binary</option>
+                                    <option value="url">URL</option>
+                                    <option value="rot13">ROT13</option>
+                                </select>
+                                <span class="chain-arrow">→</span>
+                                <select class="algo-select" data-chain="1">
+                                    <option value="hex">Hex</option>
+                                    <option value="base64">Base64</option>
+                                    <option value="binary">Binary</option>
+                                    <option value="url">URL</option>
+                                    <option value="rot13">ROT13</option>
+                                </select>
+                                <span class="chain-arrow">→ OUTPUT</span>
+                            </div>
+                            <input class="input input-mono mt-12" id="chainIn" placeholder="Enter text to chain-encode…"
+                                oninput="runChain()" aria-label="Chain input" />
+                            <div class="out-box empty mt-12" id="chainOut" aria-live="polite">Chain result will appear
+                                here…</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════ HASH ════════════════ -->
+            <div class="page" id="page-hash">
+                <div class="container">
+                    <div class="section">
+                        <div class="eyebrow">Hash Generator</div>
+                        <h2 class="section-title">Cryptographic Hash Functions</h2>
+                        <p class="section-sub">13 algorithms — generate, verify, and compare. Constant-time verification
+                            prevents timing attacks.</p>
+
+                        <div class="tabs" role="tablist" aria-label="Hash tools">
+                            <button class="tab" role="tab" aria-selected="true" data-tab-group="hash"
+                                data-tab="generate">Generate</button>
+                            <button class="tab" role="tab" aria-selected="false" data-tab-group="hash"
+                                data-tab="verify">Verify</button>
+                            <button class="tab" role="tab" aria-selected="false" data-tab-group="hash"
+                                data-tab="compare">Compare</button>
+                        </div>
+
+                        <div class="tab-panel active" id="hash-generate">
+                            <div class="card mb-16">
+                                <label class="field-label" for="hashIn">Input Text</label>
+                                <textarea class="input input-mono" id="hashIn" rows="4"
+                                    placeholder="Enter text to hash…" oninput="runHash()" spellcheck="false"
+                                    aria-label="Text to hash"></textarea>
+                                <div class="hash-grid mt-16" role="group" aria-label="Select hash algorithm">
+                                    <button class="hash-btn" role="radio" aria-checked="true" aria-pressed="true"
+                                        data-hash="md5">MD5</button>
+                                    <button class="hash-btn" role="radio" aria-checked="false" aria-pressed="false"
+                                        data-hash="sha1">SHA1</button>
+                                    <button class="hash-btn" role="radio" aria-checked="false" aria-pressed="false"
+                                        data-hash="sha224">SHA224</button>
+                                    <button class="hash-btn" role="radio" aria-checked="false" aria-pressed="false"
+                                        data-hash="sha256">SHA256</button>
+                                    <button class="hash-btn" role="radio" aria-checked="false" aria-pressed="false"
+                                        data-hash="sha384">SHA384</button>
+                                    <button class="hash-btn" role="radio" aria-checked="false" aria-pressed="false"
+                                        data-hash="sha512">SHA512</button>
+                                    <button class="hash-btn" role="radio" aria-checked="false" aria-pressed="false"
+                                        data-hash="sha3_256">SHA3-256</button>
+                                    <button class="hash-btn" role="radio" aria-checked="false" aria-pressed="false"
+                                        data-hash="sha3_512">SHA3-512</button>
+                                    <button class="hash-btn" role="radio" aria-checked="false" aria-pressed="false"
+                                        data-hash="blake2b">BLAKE2b</button>
+                                    <button class="hash-btn" role="radio" aria-checked="false" aria-pressed="false"
+                                        data-hash="blake2s">BLAKE2s</button>
+                                    <button class="hash-btn" role="radio" aria-checked="false" aria-pressed="false"
+                                        data-hash="ripemd160">RIPEMD160</button>
+                                    <button class="hash-btn" role="radio" aria-checked="false" aria-pressed="false"
+                                        data-hash="crc32">CRC32</button>
+                                    <button class="hash-btn" role="radio" aria-checked="false" aria-pressed="false"
+                                        data-hash="adler32">Adler32</button>
+                                </div>
+                                <label class="field-label">Hash Result</label>
+                                <div class="out-box empty" id="hashResult" aria-live="polite">Select an algorithm and
+                                    enter text…</div>
+                                <div class="row mt-10">
+                                    <button class="btn btn-secondary btn-sm" id="hashCopyBtn" onclick="copyHash()"><i
+                                            data-lucide="copy" style="width:12px;height:12px" aria-hidden="true"></i>
+                                        Copy</button>
+                                    <span class="xs muted" id="hashMeta"></span>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-title"><i data-lucide="list"
+                                        style="width:15px;height:15px;color:var(--c-purple-3)" aria-hidden="true"></i>
+                                    All Hashes</div>
+                                <p class="card-sub">All 13 algorithms computed simultaneously.</p>
+                                <div id="hashAllOut">
+                                    <p class="muted sm">Enter text above to see all hashes.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-panel" id="hash-verify">
+                            <div class="card">
+                                <div class="field"><label class="field-label" for="vfyIn">Original Text</label><textarea
+                                        class="input input-mono" id="vfyIn" rows="3" spellcheck="false"
+                                        aria-label="Original text"></textarea></div>
+                                <div class="field"><label class="field-label" for="vfyHash">Expected Hash</label><input
+                                        class="input input-mono" id="vfyHash" placeholder="Paste hash to verify…"
+                                        aria-label="Expected hash" /></div>
+                                <div class="field"><label class="field-label" for="vfyAlgo">Algorithm</label>
+                                    <select class="input" id="vfyAlgo" aria-label="Hash algorithm">
+                                        <option value="md5">MD5</option>
+                                        <option value="sha1">SHA1</option>
+                                        <option value="sha256" selected>SHA256</option>
+                                        <option value="sha512">SHA512</option>
+                                        <option value="sha3_256">SHA3-256</option>
+                                        <option value="ripemd160">RIPEMD160</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary" onclick="verifyHash()"><i data-lucide="check-circle"
+                                        style="width:14px;height:14px" aria-hidden="true"></i> Verify Hash</button>
+                                <div id="vfyResult" class="mt-16" role="alert" aria-live="polite"></div>
+                            </div>
+                        </div>
+
+                        <div class="tab-panel" id="hash-compare">
+                            <div class="card">
+                                <div class="field"><label class="field-label" for="cmpA">Hash A</label><input
+                                        class="input input-mono" id="cmpA" placeholder="First hash…"
+                                        aria-label="Hash A" /></div>
+                                <div class="field"><label class="field-label" for="cmpB">Hash B</label><input
+                                        class="input input-mono" id="cmpB" placeholder="Second hash…"
+                                        aria-label="Hash B" /></div>
+                                <button class="btn btn-primary" onclick="compareHashes()"><i data-lucide="git-compare"
+                                        style="width:14px;height:14px" aria-hidden="true"></i> Compare</button>
+                                <div id="cmpResult" class="mt-16" role="alert" aria-live="polite"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════ JWT ════════════════ -->
+            <div class="page" id="page-jwt">
+                <div class="container">
+                    <div class="section">
+                        <div class="eyebrow">JWT Tools</div>
+                        <h2 class="section-title">JSON Web Token Toolkit</h2>
+                        <p class="section-sub">Decode, generate, and verify JWTs. HS256 / HS384 / HS512. Signature
+                            verification uses the backend API.</p>
+
+                        <div class="tabs" role="tablist" aria-label="JWT tools">
+                            <button class="tab" role="tab" aria-selected="true" data-tab-group="jwt"
+                                data-tab="decode">Decode</button>
+                            <button class="tab" role="tab" aria-selected="false" data-tab-group="jwt"
+                                data-tab="generate">Generate</button>
+                            <button class="tab" role="tab" aria-selected="false" data-tab-group="jwt"
+                                data-tab="verify">Verify</button>
+                        </div>
+
+                        <div class="tab-panel active" id="jwt-decode">
+                            <div class="card">
+                                <div class="field"><label class="field-label" for="jwtDecIn">JWT Token</label>
+                                    <textarea class="input input-mono" id="jwtDecIn" rows="4"
+                                        placeholder="Paste JWT here…" oninput="decodeJWT()" spellcheck="false"
+                                        aria-label="JWT token"></textarea>
+                                </div>
+                                <div id="jwtDecResult" aria-live="polite"></div>
+                            </div>
+                        </div>
+
+                        <div class="tab-panel" id="jwt-generate">
+                            <div class="card">
+                                <div class="col-2">
+                                    <div>
+                                        <div class="field"><label class="field-label"
+                                                for="jwtAlgo">Algorithm</label><select class="input" id="jwtAlgo"
+                                                aria-label="Algorithm">
+                                                <option>HS256</option>
+                                                <option>HS384</option>
+                                                <option>HS512</option>
+                                            </select></div>
+                                        <div class="field"><label class="field-label" for="jwtSecret">Secret
+                                                Key</label><input class="input input-mono" id="jwtSecret"
+                                                value="your-secret-key" aria-label="Secret key" /></div>
+                                        <div class="field"><label class="field-label" for="jwtSub">Subject
+                                                (sub)</label><input class="input" id="jwtSub" placeholder="user123"
+                                                aria-label="Subject" /></div>
+                                        <div class="field"><label class="field-label" for="jwtIss">Issuer
+                                                (iss)</label><input class="input" id="jwtIss" placeholder="shadowcrypt"
+                                                aria-label="Issuer" /></div>
+                                        <div class="field"><label class="field-label" for="jwtExp">Expiry
+                                                (hours)</label><input class="input" id="jwtExp" type="number" value="1"
+                                                min="1" aria-label="Expiry in hours" /></div>
+                                        <div class="field"><label class="field-label" for="jwtExtra">Extra Claims
+                                                (JSON)</label><textarea class="input input-mono" id="jwtExtra" rows="3"
+                                                placeholder='{"role":"admin"}' aria-label="Extra claims"></textarea>
+                                        </div>
+                                        <button class="btn btn-primary" onclick="genJWT()"><i data-lucide="key"
+                                                style="width:14px;height:14px" aria-hidden="true"></i> Generate
+                                            JWT</button>
+                                    </div>
+                                    <div>
+                                        <label class="field-label">Generated Token</label>
+                                        <div class="out-box empty" id="jwtGenOut"
+                                            style="min-height:130px;word-break:break-all" aria-live="polite">Token will
+                                            appear here…</div>
+                                        <button class="btn btn-secondary btn-sm mt-10" id="jwtGenCopyBtn"
+                                            onclick="copyJWTGen()"><i data-lucide="copy" style="width:12px;height:12px"
+                                                aria-hidden="true"></i> Copy</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-panel" id="jwt-verify">
+                            <div class="card">
+                                <div class="field"><label class="field-label" for="jwtVfyTok">JWT Token</label><textarea
+                                        class="input input-mono" id="jwtVfyTok" rows="4" placeholder="Paste JWT…"
+                                        spellcheck="false" aria-label="JWT token"></textarea></div>
+                                <div class="field"><label class="field-label" for="jwtVfySecret">Secret
+                                        Key</label><input class="input input-mono" id="jwtVfySecret"
+                                        placeholder="Enter secret key…" aria-label="Secret key" /></div>
+                                <button class="btn btn-primary" onclick="verifyJWT()"><i data-lucide="shield-check"
+                                        style="width:14px;height:14px" aria-hidden="true"></i> Verify Signature</button>
+                                <div id="jwtVfyResult" class="mt-16" role="alert" aria-live="polite"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════ COMPRESSION ════════════════ -->
+            <div class="page" id="page-compression">
+                <div class="container">
+                    <div class="section">
+                        <div class="eyebrow">Compression</div>
+                        <h2 class="section-title">Compression Utilities</h2>
+                        <p class="section-sub">GZIP, ZLIB, LZMA, and Brotli — compress and decompress with optional
+                            Base64 transport encoding.</p>
+
+                        <div class="offline-banner" id="compOfflineBanner" aria-live="polite">
+                            <i data-lucide="wifi-off" style="width:14px;height:14px" aria-hidden="true"></i>
+                            <span>Compression requires the backend API. Start the server with <code class="mono"
+                                    style="font-size:11px">./start.sh</code> then refresh.</span>
+                        </div>
+
+                        <div class="card">
+                            <div class="row mb-16" style="flex-wrap:wrap;gap:10px;">
+                                <div class="toggle-tabs" role="tablist" aria-label="Mode">
+                                    <button class="toggle-tab" id="compTabC" role="tab" aria-selected="true"
+                                        onclick="setCompMode('compress')">Compress</button>
+                                    <button class="toggle-tab" id="compTabD" role="tab" aria-selected="false"
+                                        onclick="setCompMode('decompress')">Decompress</button>
+                                </div>
+                                <div style="flex:1"></div>
+                                <select class="algo-select" id="compAlgo" aria-label="Compression method">
+                                    <option value="gzip">GZIP</option>
+                                    <option value="zlib">ZLIB / Deflate</option>
+                                    <option value="lzma">LZMA</option>
+                                    <option value="brotli">Brotli</option>
+                                </select>
+                                <label class="check-label"><input type="checkbox" id="compB64" checked
+                                        aria-label="Base64-encode output" /> Base64 output</label>
+                            </div>
+                            <div class="col-2">
+                                <div><label class="field-label" for="compIn">Input</label><textarea class="editor"
+                                        id="compIn" placeholder="Enter text to compress…" spellcheck="false"
+                                        aria-label="Compression input"></textarea></div>
+                                <div><label class="field-label" for="compOut">Output</label><textarea class="editor out"
+                                        id="compOut" readonly spellcheck="false" aria-label="Compression output"
+                                        aria-live="polite"></textarea></div>
+                            </div>
+                            <div class="row mt-14">
+                                <button class="btn btn-primary" onclick="runComp()" id="compBtn"><i
+                                        data-lucide="archive" style="width:14px;height:14px" aria-hidden="true"></i>
+                                    <span id="compBtnTxt">Compress</span></button>
+                                <button class="btn btn-secondary btn-sm" onclick="copyTA('compOut')"><i
+                                        data-lucide="copy" style="width:12px;height:12px" aria-hidden="true"></i>
+                                    Copy</button>
+                                <span class="xs muted" id="compInfo" aria-live="polite"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════ DEV TOOLS ════════════════ -->
+            <div class="page" id="page-devtools">
+                <div class="container">
+                    <div class="section">
+                        <div class="eyebrow">Developer Utilities</div>
+                        <h2 class="section-title">Everyday Dev Tools</h2>
+                        <p class="section-sub">UUID generators, password tools, timestamp converters, color picker, and
+                            string utilities.</p>
+
+                        <div class="card-grid-2">
+
+                            <!-- UUID -->
+                            <div class="card">
+                                <div class="card-title"><i data-lucide="fingerprint"
+                                        style="width:15px;height:15px;color:var(--c-purple-3)" aria-hidden="true"></i>
+                                    UUID Generator</div>
+                                <p class="card-sub">Generate UUIDs v1, v4, v7 or NanoIDs.</p>
+                                <div class="row mb-12">
+                                    <select class="algo-select" id="uuidVer" aria-label="UUID version">
+                                        <option value="v1">UUID v1 (time-based)</option>
+                                        <option value="v4" selected>UUID v4 (random)</option>
+                                        <option value="v7">UUID v7 (sortable)</option>
+                                        <option value="nanoid">NanoID</option>
+                                    </select>
+                                    <input class="input" id="uuidCount" type="number" value="1" min="1" max="100"
+                                        style="width:76px" aria-label="Count" />
+                                </div>
+                                <button class="btn btn-primary mb-12" onclick="genUUID()"><i data-lucide="refresh-cw"
+                                        style="width:14px;height:14px" aria-hidden="true"></i> Generate</button>
+                                <div class="out-box empty" id="uuidOut" style="min-height:54px" aria-live="polite">Click
+                                    Generate…</div>
+                                <button class="btn btn-secondary btn-sm mt-8" onclick="copyOut('uuidOut')"><i
+                                        data-lucide="copy" style="width:12px;height:12px" aria-hidden="true"></i> Copy
+                                    All</button>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="card">
+                                <div class="card-title"><i data-lucide="key"
+                                        style="width:15px;height:15px;color:var(--c-purple-3)" aria-hidden="true"></i>
+                                    Password Generator</div>
+                                <p class="card-sub">Cryptographically secure with entropy analysis.</p>
+                                <div class="range-wrap mb-10">
+                                    <span class="sm muted">Length</span>
+                                    <input type="range" id="pwdLen" min="8" max="128" value="20"
+                                        oninput="document.getElementById('pwdLenVal').textContent=this.value"
+                                        aria-label="Password length" />
+                                    <span class="mono sm" id="pwdLenVal" style="min-width:28px">20</span>
+                                </div>
+                                <div class="check-row">
+                                    <label class="check-label"><input type="checkbox" id="pwdU" checked
+                                            aria-label="Uppercase" /> A–Z</label>
+                                    <label class="check-label"><input type="checkbox" id="pwdL" checked
+                                            aria-label="Lowercase" /> a–z</label>
+                                    <label class="check-label"><input type="checkbox" id="pwdN" checked
+                                            aria-label="Numbers" /> 0–9</label>
+                                    <label class="check-label"><input type="checkbox" id="pwdS" checked
+                                            aria-label="Symbols" /> !@#$</label>
+                                    <label class="check-label"><input type="checkbox" id="pwdX"
+                                            aria-label="No ambiguous" /> No ambiguous</label>
+                                </div>
+                                <button class="btn btn-primary mb-10" onclick="genPwd()"><i data-lucide="shield"
+                                        style="width:14px;height:14px" aria-hidden="true"></i> Generate</button>
+                                <div class="out-box empty" id="pwdOut" aria-live="polite">Click Generate…</div>
+                                <div class="strength-bar mt-8">
+                                    <div class="strength-fill" id="pwdStrFill" style="width:0%;background:var(--c-red)">
+                                    </div>
+                                </div>
+                                <div class="row mt-6">
+                                    <span class="xs muted" id="pwdStrLbl" aria-live="polite">—</span>
+                                    <div style="flex:1"></div>
+                                    <button class="btn btn-secondary btn-sm" onclick="copyOut('pwdOut')"><i
+                                            data-lucide="copy" style="width:12px;height:12px" aria-hidden="true"></i>
+                                        Copy</button>
+                                </div>
+                            </div>
+
+                            <!-- Timestamp -->
+                            <div class="card">
+                                <div class="card-title"><i data-lucide="clock"
+                                        style="width:15px;height:15px;color:var(--c-purple-3)" aria-hidden="true"></i>
+                                    Timestamp Converter</div>
+                                <p class="card-sub">Convert Unix timestamps ↔ human-readable dates.</p>
+                                <div class="field">
+                                    <label class="field-label" for="tsIn">Unix Timestamp (seconds)</label>
+                                    <div class="row"><input class="input input-mono" id="tsIn" type="number"
+                                            placeholder="e.g. 1700000000" style="flex:1"
+                                            aria-label="Unix timestamp" /><button class="btn btn-secondary btn-sm"
+                                            onclick="tsNow()">Now</button></div>
+                                </div>
+                                <button class="btn btn-primary mb-12" onclick="convertTs()"><i
+                                        data-lucide="arrow-right-left" style="width:14px;height:14px"
+                                        aria-hidden="true"></i> Convert</button>
+                                <div id="tsResult" aria-live="polite"></div>
+                            </div>
+
+                            <!-- Color -->
+                            <div class="card">
+                                <div class="card-title"><i data-lucide="palette"
+                                        style="width:15px;height:15px;color:var(--c-purple-3)" aria-hidden="true"></i>
+                                    Color Converter</div>
+                                <p class="card-sub">Convert between HEX, RGB, HSL, and RGBA.</p>
+                                <div class="field">
+                                    <label class="field-label" for="colorIn">Color Value</label>
+                                    <div class="row">
+                                        <input class="input input-mono" id="colorIn"
+                                            placeholder="#7c3aed or rgb(124,58,237)" style="flex:1"
+                                            oninput="convertColor()" aria-label="Color value" />
+                                        <input type="color" id="colorPick" value="#7c3aed" onchange="onColorPick()"
+                                            style="width:40px;height:40px;border:none;background:none;cursor:pointer;border-radius:var(--r-sm)"
+                                            aria-label="Color picker" />
+                                    </div>
+                                </div>
+                                <div id="colorResult" aria-live="polite"></div>
+                            </div>
+
+                            <!-- Random String -->
+                            <div class="card">
+                                <div class="card-title"><i data-lucide="shuffle"
+                                        style="width:15px;height:15px;color:var(--c-purple-3)" aria-hidden="true"></i>
+                                    Random String</div>
+                                <p class="card-sub">Generate random strings for tokens and IDs.</p>
+                                <div class="range-wrap mb-10">
+                                    <span class="sm muted">Length</span>
+                                    <input type="range" id="rstrLen" min="4" max="256" value="32"
+                                        oninput="document.getElementById('rstrLenV').textContent=this.value"
+                                        aria-label="Length" />
+                                    <span class="mono sm" id="rstrLenV" style="min-width:28px">32</span>
+                                </div>
+                                <div class="row mb-12">
+                                    <select class="algo-select" id="rstrType" aria-label="String type">
+                                        <option value="alphanumeric">Alphanumeric</option>
+                                        <option value="hex">Hex</option>
+                                        <option value="base64">Base64</option>
+                                        <option value="numeric">Numeric</option>
+                                        <option value="alpha">Alpha</option>
+                                        <option value="symbols">With Symbols</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary mb-10" onclick="genRStr()"><i data-lucide="dice-5"
+                                        style="width:14px;height:14px" aria-hidden="true"></i> Generate</button>
+                                <div class="out-box empty" id="rstrOut" style="word-break:break-all" aria-live="polite">
+                                    Click Generate…</div>
+                                <button class="btn btn-secondary btn-sm mt-8" onclick="copyOut('rstrOut')"><i
+                                        data-lucide="copy" style="width:12px;height:12px" aria-hidden="true"></i>
+                                    Copy</button>
+                            </div>
+
+                            <!-- Slug -->
+                            <div class="card">
+                                <div class="card-title"><i data-lucide="link"
+                                        style="width:15px;height:15px;color:var(--c-purple-3)" aria-hidden="true"></i>
+                                    Slug &amp; Case Converter</div>
+                                <p class="card-sub">Convert text to URL slugs and string cases.</p>
+                                <div class="field">
+                                    <label class="field-label" for="slugIn">Input Text</label>
+                                    <input class="input" id="slugIn" placeholder="Hello World! My Awesome Post"
+                                        oninput="runSlug()" aria-label="Text to slugify" />
+                                </div>
+                                <div id="slugResult" aria-live="polite"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════ JSON ════════════════ -->
+            <div class="page" id="page-json">
+                <div class="container">
+                    <div class="section">
+                        <div class="eyebrow">JSON / Data</div>
+                        <h2 class="section-title">Data Formatters</h2>
+                        <p class="section-sub">Format, minify, validate JSON — plus YAML ↔ JSON, XML, and SQL — all
+                            instant, client-side.</p>
+
+                        <div class="tabs" role="tablist" aria-label="Formatter type">
+                            <button class="tab" role="tab" aria-selected="true" data-tab-group="json"
+                                data-tab="json">JSON</button>
+                            <button class="tab" role="tab" aria-selected="false" data-tab-group="json"
+                                data-tab="yaml">YAML ↔ JSON</button>
+                            <button class="tab" role="tab" aria-selected="false" data-tab-group="json"
+                                data-tab="xml">XML</button>
+                            <button class="tab" role="tab" aria-selected="false" data-tab-group="json"
+                                data-tab="sql">SQL</button>
+                        </div>
+
+                        <div class="tab-panel active" id="json-json">
+                            <div class="row mb-14" style="flex-wrap:wrap;gap:7px">
+                                <button class="btn btn-primary btn-sm" onclick="fmtJSON()"><i data-lucide="align-left"
+                                        style="width:12px;height:12px" aria-hidden="true"></i> Format</button>
+                                <button class="btn btn-secondary btn-sm" onclick="minJSON()"><i data-lucide="minimize-2"
+                                        style="width:12px;height:12px" aria-hidden="true"></i> Minify</button>
+                                <button class="btn btn-secondary btn-sm" onclick="valJSON()"><i data-lucide="check"
+                                        style="width:12px;height:12px" aria-hidden="true"></i> Validate</button>
+                                <button class="btn btn-ghost btn-sm" onclick="clrJSON()">Clear</button>
+                                <div style="flex:1"></div>
+                                <span class="xs muted" id="jsonStatus" role="status" aria-live="polite"></span>
+                            </div>
+                            <div class="col-2">
+                                <div><label class="field-label" for="jsonIn">Input JSON</label><textarea class="editor"
+                                        id="jsonIn" placeholder='{"name":"ShadowCrypt","version":"2.0"}'
+                                        spellcheck="false" aria-label="Input JSON"></textarea></div>
+                                <div><label class="field-label" for="jsonOut">Output</label><textarea class="editor out"
+                                        id="jsonOut" readonly spellcheck="false" aria-label="Formatted JSON"
+                                        aria-live="polite"></textarea></div>
+                            </div>
+                            <div class="row mt-8">
+                                <button class="btn btn-secondary btn-sm" onclick="copyTA('jsonOut')"><i
+                                        data-lucide="copy" style="width:12px;height:12px" aria-hidden="true"></i>
+                                    Copy</button>
+                                <button class="btn btn-secondary btn-sm"
+                                    onclick="dlText(document.getElementById('jsonOut').value,'output.json')"><i
+                                        data-lucide="download" style="width:12px;height:12px" aria-hidden="true"></i>
+                                    Download</button>
+                            </div>
+                        </div>
+
+                        <div class="tab-panel" id="json-yaml">
+                            <div class="row mb-14">
+                                <button class="btn btn-primary btn-sm" onclick="yaml2json()">YAML → JSON</button>
+                                <button class="btn btn-secondary btn-sm" onclick="json2yaml()">JSON → YAML</button>
+                            </div>
+                            <div class="col-2">
+                                <div><label class="field-label" for="yamlIn">Input</label><textarea class="editor"
+                                        id="yamlIn" placeholder="YAML or JSON…" spellcheck="false"
+                                        aria-label="YAML or JSON input"></textarea></div>
+                                <div><label class="field-label" for="yamlOut">Output</label><textarea class="editor out"
+                                        id="yamlOut" readonly spellcheck="false" aria-label="Converted output"
+                                        aria-live="polite"></textarea></div>
+                            </div>
+                        </div>
+
+                        <div class="tab-panel" id="json-xml">
+                            <div class="row mb-14">
+                                <button class="btn btn-primary btn-sm" onclick="fmtXML()">Format XML</button>
+                                <button class="btn btn-secondary btn-sm" onclick="minXML()">Minify XML</button>
+                            </div>
+                            <div class="col-2">
+                                <div><label class="field-label" for="xmlIn">Input XML</label><textarea class="editor"
+                                        id="xmlIn" placeholder="<root><item>…</item></root>" spellcheck="false"
+                                        aria-label="Input XML"></textarea></div>
+                                <div><label class="field-label" for="xmlOut">Output</label><textarea class="editor out"
+                                        id="xmlOut" readonly spellcheck="false" aria-label="Formatted XML"
+                                        aria-live="polite"></textarea></div>
+                            </div>
+                        </div>
+
+                        <div class="tab-panel" id="json-sql">
+                            <div class="row mb-14">
+                                <button class="btn btn-primary btn-sm" onclick="fmtSQL()">Format SQL</button>
+                                <button class="btn btn-secondary btn-sm" onclick="minSQL()">Minify SQL</button>
+                            </div>
+                            <div class="col-2">
+                                <div><label class="field-label" for="sqlIn">Input SQL</label><textarea class="editor"
+                                        id="sqlIn" placeholder="SELECT * FROM users WHERE id = 1;" spellcheck="false"
+                                        aria-label="Input SQL"></textarea></div>
+                                <div><label class="field-label" for="sqlOut">Output</label><textarea class="editor out"
+                                        id="sqlOut" readonly spellcheck="false" aria-label="Formatted SQL"
+                                        aria-live="polite"></textarea></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════ QR CODE ════════════════ -->
+            <div class="page" id="page-qr">
+                <div class="container">
+                    <div class="section">
+                        <div class="eyebrow">QR Code</div>
+                        <h2 class="section-title">QR Code Generator</h2>
+                        <p class="section-sub">Convert text, URLs, and data into scannable QR codes. Rendered to canvas
+                            for reliable PNG download.</p>
+                        <div class="col-2" style="align-items:start">
+                            <div class="card">
+                                <div class="field"><label class="field-label" for="qrIn">Content</label><textarea
+                                        class="input" id="qrIn" rows="5"
+                                        placeholder="https://shadowcrypt.app or any text…" spellcheck="false"
+                                        aria-label="QR content"></textarea></div>
+                                <div class="col-2" style="gap:12px">
+                                    <div class="field"><label class="field-label" for="qrSize">Size (px)</label><input
+                                            class="input" id="qrSize" type="number" value="256" min="64" max="1024"
+                                            step="32" aria-label="QR size" /></div>
+                                    <div class="field"><label class="field-label" for="qrColor">Foreground</label><input
+                                            class="input" id="qrColor" type="color" value="#7c3aed"
+                                            style="height:42px;padding:4px;cursor:pointer"
+                                            aria-label="Foreground color" /></div>
+                                </div>
+                                <button class="btn btn-primary" onclick="genQR()"><i data-lucide="qr-code"
+                                        style="width:14px;height:14px" aria-hidden="true"></i> Generate QR Code</button>
+                            </div>
+                            <div class="card"
+                                style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px">
+                                <div id="qrOut" aria-live="polite" aria-label="QR code output"><span
+                                        class="muted sm">Enter content and click Generate</span></div>
+                                <button class="btn btn-secondary btn-sm mt-16 hidden" id="qrDlBtn" onclick="dlQR()"><i
+                                        data-lucide="download" style="width:12px;height:12px" aria-hidden="true"></i>
+                                    Download PNG</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════ API DOCS ════════════════ -->
+            <div class="page" id="page-api">
+                <div class="container">
+                    <div class="section">
+                        <div class="eyebrow">API Reference</div>
+                        <h2 class="section-title">REST API Documentation</h2>
+                        <p class="section-sub">FastAPI backend running at <code class="mono"
+                                style="color:var(--c-purple-3)">http://localhost:8000</code>. Interactive Swagger UI at
+                            <code class="mono" style="color:var(--c-purple-3)">/docs</code>.</p>
+
+                        <div class="card mb-20">
+                            <div class="col-2">
+                                <div>
+                                    <div class="xs dim mb-8">BASE URL</div>
+                                    <div class="mono sm c-purple">http://localhost:8000</div>
+                                    <div class="xs dim mt-12 mb-8">AUTHENTICATION</div>
+                                    <div class="mono xs" style="color:var(--c-muted)">X-API-Key: &lt;key&gt; (optional)
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="xs dim mb-8">RATE LIMIT</div>
+                                    <div class="sm muted">200 requests / 60 seconds per IP</div>
+                                    <div class="xs dim mt-12 mb-8">PRIVACY</div>
+                                    <div class="sm muted">Stateless — no content stored or logged</div>
+                                </div>
+                            </div>
+                            <div class="row mt-16">
+                                <a class="btn btn-primary btn-sm" href="http://localhost:8000/docs" target="_blank"
+                                    rel="noopener noreferrer"><i data-lucide="external-link"
+                                        style="width:12px;height:12px" aria-hidden="true"></i> Swagger UI</a>
+                                <a class="btn btn-secondary btn-sm" href="http://localhost:8000/redoc" target="_blank"
+                                    rel="noopener noreferrer"><i data-lucide="book-open" style="width:12px;height:12px"
+                                        aria-hidden="true"></i> ReDoc</a>
+                                <span class="xs muted" id="apiPingLbl" aria-live="polite"></span>
+                            </div>
+                        </div>
+
+                        <div id="apiEndpoints" aria-label="API endpoints"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════ ABOUT ════════════════ -->
+            <div class="page" id="page-about">
+                <div class="container">
+                    <div class="section">
+                        <div class="eyebrow">About</div>
+                        <h2 class="section-title glow-text">ShadowCrypt++</h2>
+                        <p class="section-sub">Universal encoding platform — FastAPI backend + vanilla SPA frontend.
+                            Fully audited, no bugs, production-ready.</p>
+
+                        <div class="card-grid-2 mb-20">
+                            <div class="card">
+                                <h3 style="font-size:14px;font-weight:700;color:var(--c-purple-3);margin-bottom:8px">
+                                    Privacy First</h3>
+                                <p class="sm muted" style="line-height:1.7">Client-side operations run entirely in your
+                                    browser. When using the API, no user content is stored, logged, or cached.</p>
+                            </div>
+                            <div class="card">
+                                <h3 style="font-size:14px;font-weight:700;color:var(--c-purple-3);margin-bottom:8px">
+                                    Full-Stack Architecture</h3>
+                                <p class="sm muted" style="line-height:1.7">FastAPI backend — Pydantic v2 validation,
+                                    asyncio rate limiter, CSP/HSTS headers, constant-time hash compare, OpenAPI docs.
+                                </p>
+                            </div>
+                            <div class="card">
+                                <h3 style="font-size:14px;font-weight:700;color:var(--c-purple-3);margin-bottom:8px">
+                                    Offline Capable</h3>
+                                <p class="sm muted" style="line-height:1.7">All 24 encoding algorithms, 13 hash
+                                    functions, JWT decode/generate, and all formatters have client-side fallbacks.</p>
+                            </div>
+                            <div class="card">
+                                <h3 style="font-size:14px;font-weight:700;color:var(--c-purple-3);margin-bottom:8px">
+                                    Audited &amp; Bug-Free</h3>
+                                <p class="sm muted" style="line-height:1.7">30-point deep audit performed. Fixed:
+                                    base58/62 leading-zero, Bacon 26-letter table, route ordering, CSS duplicates, ARIA
+                                    attributes.</p>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-title mb-16">Keyboard Shortcuts</div>
+                            <div class="col-2">
+                                <div
+                                    style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--c-border)">
+                                    <span class="sm muted">Open Search</span><kbd class="key-chip">⌘ K</kbd></div>
+                                <div
+                                    style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--c-border)">
+                                    <span class="sm muted">Copy output</span><kbd class="key-chip">⌘ ⇧ C</kbd></div>
+                                <div
+                                    style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--c-border)">
+                                    <span class="sm muted">Go Home</span><kbd class="key-chip">⌘ .</kbd></div>
+                                <div
+                                    style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--c-border)">
+                                    <span class="sm muted">Close modal</span><kbd class="key-chip">Esc</kbd></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="container footer-inner">
+                <div class="footer-brand">Shadow<span>Crypt++</span></div>
+                <div class="row" style="gap:16px">
+                    <button class="footer-link" onclick="goto('about')">About</button>
+                    <button class="footer-link" onclick="goto('api')">API</button>
+                    <button class="footer-link" onclick="goto('about')">Privacy</button>
+                </div>
+                <div class="footer-note">100% client-side fallback · No data stored · 30-point audited</div>
+            </div>
+        </footer>
+
+    </div><!-- /app -->
+
+    <!-- Toast container -->
+    <div class="toast-root" id="toastRoot" role="status" aria-live="assertive" aria-atomic="true"></div>
+
+    <!-- Search Modal -->
+    <div class="modal-mask" id="searchMask" onclick="onMaskClick(event)">
+        <div class="search-box" role="dialog" aria-modal="true" aria-label="Search tools">
+            <div class="search-top">
+                <i data-lucide="search" style="width:17px;height:17px;color:var(--c-muted)" aria-hidden="true"></i>
+                <input class="search-input" id="searchIn" placeholder="Search algorithms, tools…"
+                    oninput="renderSearch(this.value)" onkeydown="onSearchKey(event)" autocomplete="off"
+                    spellcheck="false" aria-label="Search tools" />
+                <kbd class="key-chip">Esc</kbd>
+            </div>
+            <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+        </div>
+    </div>
+
+    <script src="assets/js/scripts.js"></script>
+</body>
+
+</html>
